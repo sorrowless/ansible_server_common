@@ -13,7 +13,7 @@ Ansible 2.4
 #### Role Variables
 
 ```yaml
-server_common:
+server_common_group:
   # Host default packages
   packages:
     - atop
@@ -35,11 +35,14 @@ server_common:
   #      state: present
   #      # Gen pass by python -c 'import crypt; print(crypt.crypt("This is my Password", "$1$blackgolem$"))'
   #      password: "$1$blackgol$bIR4q4z6bvbLIleUt4jOK0"
+server_common_host: {}
 ```
 
 Above list is the defaults. You can override it by setting your own data in
 group_vars or host_vars by overriding the whole dict or just setting some data
-of it - it will be merged with defaults anyway.
+of it - it will be merged with defaults anyway. `server_common_host` there
+have a precedence over `server_common_group` which has precedence over default
+values.
 
 #### Dependencies
 
