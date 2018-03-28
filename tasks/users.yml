@@ -1,0 +1,13 @@
+---
+- name: Common | Users | Ensure users on target node
+  user:
+    name: "{{ item.name }}"
+    comment: "{{ item.comment | default('') }}"
+    groups: "{{ item.groups | default('') }}"
+    append: yes
+    create_home: yes
+    remove: "{{ item.absent | default(False) }}"
+    state: "{{ item.state | default('present') }}"
+    password: "{{ item.password }}"
+  with_items: "{{ s_cd.users }}"
+  no_log: yes
