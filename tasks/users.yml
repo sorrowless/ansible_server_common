@@ -5,7 +5,7 @@
     comment: "{{ item.comment | default('') }}"
     groups: "{{ item.groups | default('') }}"
     append: yes
-    create_home: yes
+    createhome: yes
     remove: "{{ item.absent | default(False) }}"
     state: "{{ item.state | default('present') }}"
     password: "{{ item.password }}"

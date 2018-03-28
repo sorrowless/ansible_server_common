@@ -2,7 +2,6 @@
 - name: Common | Override default data with user one
   set_fact:
     s_cd: "{{ server_common_data | combine(server_common_group, server_common_host, recursive=True) }}"
-  when: server_common is defined
 
 - name: Common | Packages installation
   package:
