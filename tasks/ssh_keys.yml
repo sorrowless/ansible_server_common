@@ -1,0 +1,7 @@
+---
+- name: Common | SSH keys | Ensure user {{ user.name }} has his ssh keys installed properly
+  authorized_key:
+    user: "{{ user.name }}"
+    key: "{{ item.name }}"
+    state: "{{ item.state }}"
+  with_items: "{{ user.ssh_keys }}"

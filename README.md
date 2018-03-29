@@ -35,6 +35,9 @@ server_common_group:
   #      state: present
   #      # Gen pass by python -c 'import crypt; print(crypt.crypt("This is my Password", "$1$blackgolem$"))'
   #      password: "$1$blackgol$bIR4q4z6bvbLIleUt4jOK0"
+  #      ssh_keys:
+  #        - name: https://github.com/username.keys
+  #          state: present
 server_common_host: {}
 ```
 

@@ -2,16 +2,32 @@
 - name: Common | Override default data with user one
   set_fact:
     s_cd: "{{ server_common_data | combine(server_common_group, server_common_host, recursive=True) }}"
+  tags:
+    - always
 
 - name: Common | Packages installation
   package:
     name: "{{ item }}"
     state: latest
   with_items: "{{ s_cd.packages }}"
+  tags:
+    - packages
 
 - name: Common | Set hostname
   hostname:
     name: "{{ s_cd.dns_hostname }}"
+  tags:
+    - hostname
 
 - name: Common | Users
   include_tasks: users.yml
+  tags:
+    - users
+
+- name: Common | SSH keys
+  include_tasks: ssh_keys.yml
+  with_items: "{{ s_cd.users }}"
+  loop_control:
+    loop_var: user
+  tags:
+    - ssh_keys
