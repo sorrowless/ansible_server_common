@@ -23,6 +23,7 @@
   include_tasks: users.yml
   tags:
     - users
+    - ssh_keys
 
 - name: Common | SSH keys
   include_tasks: ssh_keys.yml
