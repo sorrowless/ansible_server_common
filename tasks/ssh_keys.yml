@@ -4,5 +4,5 @@
     user: "{{ user.value.name }}"
     key: "{{ item.name }}"
     state: "{{ item.state }}"
-  with_items: "{{ user.values.ssh_keys }}"
-  when: user.values.ssh_keys is defined
+  with_items: "{{ user.value.ssh_keys }}"
+  when: user.value.ssh_keys is defined
