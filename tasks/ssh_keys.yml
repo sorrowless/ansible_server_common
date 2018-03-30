@@ -1,8 +1,8 @@
 ---
-- name: Common | SSH keys | Ensure user {{ user.name }} has his ssh keys installed properly
+- name: Common | SSH keys | Set {{ user.key }} keys
   authorized_key:
-    user: "{{ user.name }}"
+    user: "{{ user.value.name }}"
     key: "{{ item.name }}"
     state: "{{ item.state }}"
-  with_items: "{{ user.ssh_keys }}"
-  when: user.ssh_keys is defined
+  with_items: "{{ user.values.ssh_keys }}"
+  when: user.values.ssh_keys is defined

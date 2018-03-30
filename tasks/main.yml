@@ -27,7 +27,7 @@
 
 - name: Common | SSH keys
   include_tasks: ssh_keys.yml
-  with_items: "{{ s_cd.users }}"
+  with_dict: "{{ s_cd.users }}"
   loop_control:
     loop_var: user
   tags:

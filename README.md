@@ -28,16 +28,17 @@ server_common_group:
   # By default we do not include any user to not intrude to your system. Here
   # is an example of users list:
   # users:
-  #    - name: admin
-  #      comment: "Administrator. Ask anything at sbog@sbog.ru."
-  #      groups: sudo
-  #      remove: no
-  #      state: present
-  #      # Gen pass by python -c 'import crypt; print(crypt.crypt("This is my Password", "$1$blackgolem$"))'
-  #      password: "$1$blackgol$bIR4q4z6bvbLIleUt4jOK0"
-  #      ssh_keys:
-  #        - name: https://github.com/username.keys
-  #          state: present
+  #   admin:
+  #     name: admin
+  #     comment: "Administrator. Ask anything at sbog@sbog.ru."
+  #     groups: sudo
+  #     remove: no
+  #     state: present
+  #     # Gen pass by python -c 'import crypt; print(crypt.crypt("This is my Password", "$1$blackgolem$"))'
+  #     password: "$1$blackgol$bIR4q4z6bvbLIleUt4jOK0"
+  #     ssh_keys:
+  #       - name: https://github.com/username.keys
+  #         state: present
 server_common_host: {}
 ```
 
