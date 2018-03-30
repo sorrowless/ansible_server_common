@@ -5,3 +5,4 @@
     key: "{{ item.name }}"
     state: "{{ item.state }}"
   with_items: "{{ user.ssh_keys }}"
+  when: user.ssh_keys is defined
