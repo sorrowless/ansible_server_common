@@ -9,5 +9,6 @@
     remove: "{{ item.value.absent | default(False) }}"
     state: "{{ item.value.state | default('present') }}"
     password: "{{ item.value.password }}"
+    shell: /bin/bash
   with_dict: "{{ s_cd.users }}"
   no_log: yes
