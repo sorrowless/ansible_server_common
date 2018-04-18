@@ -19,6 +19,16 @@
   tags:
     - hostname
 
+- name: Common | Add hostname to hosts
+  lineinfile:
+    path: /etc/hosts
+    regexp: '^127\.0\.1\.1'
+    line: "127.0.1.1 {{ s_cd.dns_hostname }}"
+    owner: root
+    group: root
+    mode: 0644
+    insertafter: '^127\.0\.0\.1'
+
 - name: Common | Users
   include_tasks: users.yml
   tags:
