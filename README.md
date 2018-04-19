@@ -14,6 +14,8 @@ Ansible 2.4
 
 ```yaml
 server_common_group:
+  # Path to dhparams
+  tls_path: /etc/ssl_certs
   # Host default packages
   packages:
     - atop

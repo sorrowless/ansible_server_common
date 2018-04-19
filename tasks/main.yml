@@ -42,3 +42,8 @@
     loop_var: user
   tags:
     - ssh_keys
+
+- name: Common | Generate DH params for different services
+  include_tasks: dhparam.yml
+  tags:
+    - dhparam

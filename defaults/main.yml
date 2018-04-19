@@ -1,5 +1,7 @@
 ---
 server_common_data:
+  # Path to dhparams
+  tls_path: /etc/ssl_certs
   # Host default packages
   packages:
     - atop
