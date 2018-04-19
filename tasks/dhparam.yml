@@ -1,10 +1,10 @@
 ---
 - name: Common | Prepare directory for DH param
   file:
-    path: "{{ tls_path }}"
+    path: "{{ s_cd.tls_path }}"
     state: directory
 
 - name: Common | Generate DH param
-  shell: "openssl dhparam -out {{ tls_path }}/dhparam.pem 2048"
+  shell: "openssl dhparam -out {{ s_cd.tls_path }}/dhparam.pem 2048"
   args:
-    creates: "{{ tls_path }}/dhparam.pem"
+    creates: "{{ s_cd.tls_path }}/dhparam.pem"
