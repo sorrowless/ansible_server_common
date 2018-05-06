@@ -31,7 +31,7 @@
 
 - name: Common | Ensure message of the day
   copy:
-    content: "{{ motd }}"
+    content: "{{ s_cd.motd }}"
     dest: /etc/issue.net
     owner: root
     group: root
