@@ -41,6 +41,7 @@ server_common_group:
   #     ssh_keys:
   #       - name: https://github.com/username.keys
   #         state: present
+  motd: "It is a restricted area. Please, leave it now if you don't supposed to be here."
 server_common_host: {}
 ```
 

@@ -29,6 +29,14 @@
     mode: 0644
     insertafter: '^127\.0\.0\.1'
 
+- name: Common | Ensure message of the day
+  copy:
+    content: "{{ motd }}"
+    dest: /etc/issue.net
+    owner: root
+    group: root
+    mode: 0644
+
 - name: Common | Users
   include_tasks: users.yml
   tags:
