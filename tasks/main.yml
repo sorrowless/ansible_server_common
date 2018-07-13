@@ -55,3 +55,17 @@
   include_tasks: dhparam.yml
   tags:
     - dhparam
+
+- name: Set soft nofile limits
+  pam_limits:
+    domain: "*"
+    limit_type: soft
+    limit_item: nofile
+    value: "{{ s_cd.limits_nofile.soft }}"
+
+- name: Set hard nofile limits
+  pam_limits:
+    domain: "*"
+    limit_type: hard
+    limit_item: nofile
+    value: "{{ s_cd.limits_nofile.hard }}"

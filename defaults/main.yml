@@ -28,5 +28,8 @@ server_common_data:
   #       - name: https://github.com/username.keys
   #         state: present
   motd: "It is a restricted area. Please, leave it now if you aren't supposed to be here.\n\n"
+  limits_nofile:
+    soft: 100000
+    hard: 200000
 server_common_group: {}
 server_common_host: {}
