@@ -6,3 +6,5 @@
     state: "{{ item.state }}"
   with_items: "{{ user.value.ssh_keys }}"
   when: user.value.ssh_keys is defined
+  tags:
+    - ssh_keys

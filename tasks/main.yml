@@ -38,7 +38,7 @@
     mode: 0644
 
 - name: Common | Users
-  include_tasks: users.yml
+  import_tasks: users.yml
   tags:
     - users
     - ssh_keys
