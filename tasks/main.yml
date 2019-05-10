@@ -52,7 +52,7 @@
     - ssh_keys
 
 - name: Common | Generate DH params for different services
-  include_tasks: dhparam.yml
+  import_tasks: dhparam.yml
   tags:
     - dhparam
 
@@ -69,3 +69,8 @@
     limit_type: hard
     limit_item: nofile
     value: "{{ s_cd.limits_nofile.hard }}"
+
+- name: Configure Systemd
+  import_tasks: systemd.yml
+  tags:
+    - systemd

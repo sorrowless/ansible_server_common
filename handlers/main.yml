@@ -1,2 +1,5 @@
 ---
-# handlers file for server_common
+- name: Restart systemd
+  systemd:
+    name: systemd-journald
+    state: restarted
