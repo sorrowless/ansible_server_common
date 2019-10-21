@@ -12,3 +12,5 @@
     shell: /bin/bash
   with_dict: "{{ s_cd.users }}"
   no_log: yes
+  tags:
+    - users

@@ -7,4 +7,5 @@
   with_items: "{{ user.value.ssh_keys }}"
   when: user.value.ssh_keys is defined and user.value.state != 'absent'
   tags:
+    - users
     - ssh_keys

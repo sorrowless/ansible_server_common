@@ -38,7 +38,7 @@
     mode: 0644
 
 - name: Common | Users
-  import_tasks: users.yml
+  include_tasks: users.yml
   tags:
     - users
     - ssh_keys
@@ -49,6 +49,7 @@
   loop_control:
     loop_var: user
   tags:
+    - users
     - ssh_keys
 
 - name: Common | Generate DH params for different services
