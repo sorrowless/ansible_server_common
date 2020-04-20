@@ -14,3 +14,91 @@
   no_log: yes
   tags:
     - users
+
+- name: Common | Users | Ensure base bashrc history directory
+  file:
+    state: directory
+    path: /var/log/bash_history
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Common | Users | Ensure user bashrc history directory
+  file:
+    state: directory
+    path: "/var/log/bash_history/{{ item.value.name }}"
+    owner: "{{ item.value.name }}"
+    group: "{{ item.value.name }}"
+    mode: 0750
+  no_log: yes
+  with_dict: "{{ s_cd.users }}"
+
+- name: Common | Users | Ensure user bashrc file
+  copy:
+    src: skel/.bashrc
+    dest: "/home/{{ item.value.name }}/.bashrc"
+    owner: "{{ item.value.name }}"
+    group: "{{ item.value.name }}"
+    mode: 0644
+  no_log: yes
+  with_dict: "{{ s_cd.users }}"
+
+- name: Common | Users | Ensure root bashrc history directory
+  file:
+    state: directory
+    path: "/var/log/bash_history/root"
+    owner: root
+    group: root
+    mode: 0750
+
+- name: Common | Users | Ensure root bashrc file
+  copy:
+    src: skel/.bashrc
+    dest: "/root/.bashrc"
+    owner: root
+    group: root
+    mode: 0640
+
+- name: Common | Users | Ensure base irbrc history directory
+  file:
+    state: directory
+    path: /var/log/irb
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Common | Users | Ensure user irbrc history directory
+  file:
+    state: directory
+    path: "/var/log/irb/{{ item.value.name }}"
+    owner: "{{ item.value.name }}"
+    group: "{{ item.value.name }}"
+    mode: 0750
+  no_log: yes
+  with_dict: "{{ s_cd.users }}"
+
+- name: Common | Users | Ensure user irbrc file
+  copy:
+    src: irbrc
+    dest: "/home/{{ item.value.name }}/.irbrc"
+    owner: "{{ item.value.name }}"
+    group: "{{ item.value.name }}"
+    mode: 0644
+  no_log: yes
+  with_dict: "{{ s_cd.users }}"
+
+- name: Common | Users | Ensure root irbrc history directory
+  file:
+    state: directory
+    path: "/var/log/irb/root"
+    owner: root
+    group: root
+    mode: 0750
+
+- name: Common | Users | Ensure root irbrc file
+  copy:
+    src: irbrc
+    dest: "/root/.irbrc"
+    owner: root
+    group: root
+    mode: 0640

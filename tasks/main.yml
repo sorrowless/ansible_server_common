@@ -37,6 +37,14 @@
     group: root
     mode: 0644
 
+- name: Ensure Bash skeleton common lines
+  copy:
+    src: skel/.bashrc
+    dest: /etc/skel/.bashrc
+    owner: root
+    group: root
+    mode: 0644
+
 - name: Common | Users
   include_tasks: users.yml
   tags:
