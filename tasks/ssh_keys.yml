@@ -1,10 +1,64 @@
 ---
+- name: Common | SSH keys | Get all keys with URL format
+  command: "curl {{ item }}"
+  register: url_keys_temp
+  with_items: "{{ user.value.ssh_keys }}"
+  when:
+    - user.value.ssh_keys is defined
+    - user.value.state != 'absent'
+    - item.startswith('https')
+  tags:
+    - users
+    - ssh_keys
+
+- name: Common | SSH keys | Set default url keys fact
+  set_fact:
+    urlkeys: []
+  tags:
+    - users
+    - ssh_keys
+
+- name: Common | SSH keys | Set all url keys into one fact
+  set_fact:
+    urlkeys: "{{ urlkeys + [ item.stdout | default('') ] }}"
+  with_items: "{{ url_keys_temp.results }}"
+  when: user.value.ssh_keys is defined and user.value.state != 'absent'
+  tags:
+    - users
+    - ssh_keys
+
+- name: Common | SSH keys | Set default non-url keys fact
+  set_fact:
+    linekeys: []
+  tags:
+    - users
+    - ssh_keys
+
+- name: Common | SSH keys | Set all non-url keys into one fact
+  set_fact:
+    linekeys: "{{ linekeys + [ item | default('') ] }}"
+  with_items: "{{ user.value.ssh_keys }}"
+  when:
+    - user.value.ssh_keys is defined
+    - user.value.state != 'absent'
+    - not item.startswith('https')
+  tags:
+    - users
+    - ssh_keys
+
+- name: Common | SSH keys | Set fact with all user keys to set them exclusively
+  set_fact:
+    user_keys: "{{ linekeys | union(urlkeys) | join('\n') }}"
+  when: user.value.ssh_keys is defined and user.value.state != 'absent'
+  tags:
+    - users
+    - ssh_keys
+
 - name: Common | SSH keys | Set {{ user.key }} keys
   authorized_key:
     user: "{{ user.value.name }}"
-    key: "{{ item.name }}"
-    state: "{{ item.state }}"
-  with_items: "{{ user.value.ssh_keys }}"
+    key: "{{ user_keys }}"
+    exclusive: yes
   when: user.value.ssh_keys is defined and user.value.state != 'absent'
   tags:
     - users
