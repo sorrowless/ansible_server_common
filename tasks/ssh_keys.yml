@@ -54,12 +54,54 @@
     - users
     - ssh_keys
 
-- name: Common | SSH keys | Set {{ user.key }} keys
-  authorized_key:
-    user: "{{ user.value.name }}"
-    key: "{{ user_keys }}"
-    exclusive: yes
-  when: user.value.ssh_keys is defined and user.value.state != 'absent'
+- name: Common | SSH keys | Get user home directory
+  shell:
+    cmd: |
+      getent passwd "{{ user.value.name }}" | cut -d':' -f6
+  register: passwd_user
+  changed_when: false
   tags:
     - users
     - ssh_keys
+
+- name: Ensure user keys
+  block:
+    - name: Common | SSH keys | Remove chattr from authorized keys file
+      become: yes
+      become_user: root
+      file:
+        path: "{{ passwd_user.stdout }}/.ssh/authorized_keys"
+        attr: -i
+      when: user.value.ssh_keys is defined and user.value.state != 'absent'
+      register: auth_keyfile
+      # Basically we could set changed_when to this way but we unset it and
+      # set it back, so these operations will be non-idempotent anyway in such
+      # case
+      #changed_when: "'i' in auth_keyfile.diff.before.attributes"
+      changed_when: false
+      tags:
+        - users
+        - ssh_keys
+
+    - name: Common | SSH keys | Set {{ user.key }} keys
+      authorized_key:
+        user: "{{ user.value.name }}"
+        key: "{{ user_keys }}"
+        exclusive: yes
+      register: auth_keyfile
+      when: user.value.ssh_keys is defined and user.value.state != 'absent'
+      tags:
+        - users
+        - ssh_keys
+  always:
+    - name: Common | SSH keys | Set chattr to authorized keys file
+      become: yes
+      become_user: root
+      file:
+        path: "{{ passwd_user.stdout }}/.ssh/authorized_keys"
+        attr: +i
+      when: user.value.ssh_keys is defined and user.value.state != 'absent'
+      changed_when: false
+      tags:
+        - users
+        - ssh_keys
