@@ -60,6 +60,15 @@
     - users
     - ssh_keys
 
+- name: Common | Users | Disable root password
+  user:
+    name: root
+    password: "!"
+  when: s_cd.disable_root_password
+  tags:
+    - users
+    - root_password
+
 - name: Common | Generate DH params for different services
   import_tasks: dhparam.yml
   tags:
@@ -78,6 +87,11 @@
     limit_type: hard
     limit_item: nofile
     value: "{{ s_cd.limits_nofile.hard }}"
+
+- name: Common | Include unattended upgrades configuration
+  import_tasks: unattended_upgrades.yml
+  tags:
+    - unattended_upgrades
 
 - name: Configure Systemd
   import_tasks: systemd.yml

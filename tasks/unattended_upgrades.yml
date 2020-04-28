@@ -1,0 +1,20 @@
+---
+- name: Ensure unattended-upgrades package
+  package:
+    name: "unattended-upgrades"
+    state: latest
+
+- name: Ensure noninteractive configuration of upgrades
+  become: yes
+  become_user: root
+  shell:
+    cmd: |
+      echo unattended-upgrades unattended-upgrades/enable_auto_updates boolean true | debconf-set-selections
+  changed_when: False
+
+- name: Configure automatic upgrades
+  become: yes
+  become_user: root
+  command: dpkg-reconfigure -f noninteractive unattended-upgrades
+  args:
+    creates: /etc/apt/apt.conf.d/20auto-upgrades

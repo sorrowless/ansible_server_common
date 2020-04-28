@@ -12,6 +12,9 @@ server_common_data:
     - git
   # Host DNS name
   dns_hostname: localhost
+  # If set to True, root password will exclusive set to '!'. Cannot be
+  # overridden by 'users' list
+  disable_root_password: False
   users: []
   # By default we do not include any user to not intrude to your system. Here
   # is an example of users list:
