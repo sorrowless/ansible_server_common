@@ -37,13 +37,32 @@
     group: root
     mode: 0644
 
+- name: Common | Users | Ensure base bashrc history directory
+  file:
+    state: directory
+    path: /var/log/bash_history
+    owner: root
+    group: root
+    mode: 0777
+
+- name: Common | Users | Ensure base irbrc history directory
+  file:
+    state: directory
+    path: /var/log/irb
+    owner: root
+    group: root
+    mode: 0777
+
 - name: Ensure Bash skeleton common lines
   copy:
-    src: skel/.bashrc
-    dest: /etc/skel/.bashrc
+    src: "skel/{{ item }}"
+    dest: "/etc/skel/{{ item }}"
     owner: root
     group: root
     mode: 0644
+  with_items:
+    - .bashrc
+    - .irbrc
 
 - name: Common | Users
   include_tasks: users.yml

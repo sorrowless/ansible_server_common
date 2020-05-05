@@ -4,13 +4,12 @@ require 'irb/ext/save-history'
 require 'irb/completion'
 
 unless defined?(IRBDIR)
-  IRBDIR = "/var/log/irb/#{`whoami`.gsub("\n",'')}/"
+  IRBDIR = "/var/log/irb/#{`whoami`.gsub("\n",'')}"
   SCRIPT_LINES__ ||= {}
 
   module Readline
     PERMLOG = "#{IRBDIR}.permlog.rb"
     HISTORYLOG = "#{IRBDIR}.history.rb"
-    TEMPLOG = "#{IRBDIR}.#{Time.now.strftime '%y%m%d%H%M%S'}.rb"
     HISTIGNORE = /^(exit|)$/
     SCRIPT_LINES__['(irb)'] = []
   end
@@ -20,8 +19,7 @@ module Readline
   def write_log_line(line)
     line.tap do
       if line !~ HISTIGNORE
-        File.open(PERMLOG, 'a') {|f| f << "#{Time.now.gmtime.strftime("%Y-%m-%dT%k:%M:%S.%L UTC")} #{Dir.pwd.sub(ENV['HOME']+'/', '')}> #{line}\n"}
-        File.open(TEMPLOG, 'a') {|f| f << "#{line}\n"}
+        File.open(PERMLOG, 'a', 0600) {|f| f << "PID#{Process.pid} #{Time.now.gmtime.strftime("%Y-%m-%dT%k:%M:%S.%L UTC")} #{Dir.pwd.sub(ENV['HOME']+'/', '')}> #{line}\n"}
       end
       SCRIPT_LINES__['(irb)'] << "#{line}\n"
     end

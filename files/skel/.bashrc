@@ -77,4 +77,4 @@ shopt -s histappend
 PROMPT_COMMAND='history -a'
 export HISTTIMEFORMAT='%Y-%m-%d %H:%M:%S '
 export HISTFILESIZE=25000
-export HISTFILE=/var/log/bash_history/$USER/.bash_history
+export HISTFILE=/var/log/bash_history/$USER.bash_history
