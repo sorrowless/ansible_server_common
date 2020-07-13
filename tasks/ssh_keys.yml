@@ -66,6 +66,48 @@
 
 - name: Ensure user keys
   block:
+    - name: Common | SSH keys | Check for {{ user.value.name }} auth keys file
+      stat:
+        path: "{{ passwd_user.stdout }}/.ssh/authorized_keys"
+      register: auth_file
+      tags:
+        - users
+        - ssh_keys
+
+    - name: Common | SSH keys | Ensure {{ user.value.name }} ssh dir
+      become: yes
+      become_user: root
+      file:
+        path: "{{ passwd_user.stdout }}/.ssh"
+        state: directory
+        owner: "{{ user.value.name }}"
+        group: "{{ user.value.name }}"
+        mode: 0750
+      when:
+        - user.value.ssh_keys is defined
+        - user.value.state != 'absent'
+        - not auth_file.stat.exists
+      tags:
+        - users
+        - ssh_keys
+
+    - name: Common | SSH keys | Ensure {{ user.value.name }} auth keys file
+      become: yes
+      become_user: root
+      file:
+        path: "{{ passwd_user.stdout }}/.ssh/authorized_keys"
+        state: touch
+        owner: "{{ user.value.name }}"
+        group: "{{ user.value.name }}"
+        mode: 0640
+      when:
+        - user.value.ssh_keys is defined
+        - user.value.state != 'absent'
+        - not auth_file.stat.exists
+      tags:
+        - users
+        - ssh_keys
+
     - name: Common | SSH keys | Remove chattr from authorized keys file
       become: yes
       become_user: root

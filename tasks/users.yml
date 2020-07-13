@@ -24,6 +24,7 @@
     mode: 0644
   no_log: yes
   with_dict: "{{ s_cd.users }}"
+  when: item.value.state == 'present'
 
 - name: Common | Users | Ensure root bashrc file
   copy:
@@ -42,6 +43,7 @@
     mode: 0644
   no_log: yes
   with_dict: "{{ s_cd.users }}"
+  when: item.value.state == 'present'
 
 - name: Common | Users | Ensure root irbrc file
   copy:
