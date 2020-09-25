@@ -29,7 +29,9 @@ server_common_data:
   #     password: "$1$blackgol$bIR4q4z6bvbLIleUt4jOK0"
   #     ssh_keys:
   #       - name: https://github.com/username.keys
-  #         state: present
+  #     ssh_private_keys:
+  #       - name: id_ed25519
+  #         content: <private key itself>
   motd: "It is a restricted area. Please, leave it now if you aren't supposed to be here.\n\n"
   limits_nofile:
     soft: 100000

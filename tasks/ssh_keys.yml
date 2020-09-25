@@ -84,7 +84,7 @@
         group: "{{ user.value.name }}"
         mode: 0750
       when:
-        - user.value.ssh_keys is defined
+        - user.value.ssh_keys is defined or user.value.private_ssh_keys is defined
         - user.value.state != 'absent'
         - not auth_file.stat.exists
       tags:
@@ -132,6 +132,17 @@
         exclusive: yes
       register: auth_keyfile
       when: user.value.ssh_keys is defined and user.value.state != 'absent'
+      tags:
+        - users
+        - ssh_keys
+
+    - name: Common | SSH keys | Set {{ user.key }} private keys
+      copy:
+        dest: "{{ passwd_user.stdout }}/.ssh/{{ item.name }}"
+        content: "{{ item.content }}"
+        mode: 0600
+      with_items: "{{ user.value.ssh_private_keys }}"
+      when: user.value.ssh_private_keys is defined and user.value.state != 'absent'
       tags:
         - users
         - ssh_keys
