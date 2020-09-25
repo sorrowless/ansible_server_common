@@ -140,6 +140,8 @@
       copy:
         dest: "{{ passwd_user.stdout }}/.ssh/{{ item.name }}"
         content: "{{ item.content }}"
+        owner: "{{ user.value.name }}"
+        group: "{{ user.value.name }}"
         mode: 0600
       with_items: "{{ user.value.ssh_private_keys }}"
       when: user.value.ssh_private_keys is defined and user.value.state != 'absent'
