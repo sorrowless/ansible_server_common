@@ -1,54 +1,47 @@
 ---
 - name: Common | Users | Ensure users on target node
   user:
-    name: "{{ item.value.name }}"
-    comment: "{{ item.value.comment | default('') }}"
-    groups: "{{ item.value.groups | default('') }}"
+    name: "{{ user.value.name }}"
+    comment: "{{ user.value.comment | default('') }}"
+    groups: "{{ user.value.groups | default('') }}"
     append: yes
     createhome: yes
-    remove: "{{ item.value.absent | default(False) }}"
-    state: "{{ item.value.state | default('present') }}"
-    password: "{{ item.value.password }}"
+    remove: "{{ user.value.absent | default(False) }}"
+    state: "{{ user.value.state | default('present') }}"
+    password: "{{ user.value.password }}"
     shell: /bin/bash
-  with_dict: "{{ s_cd.users }}"
   no_log: yes
   tags:
     - users
 
+- name: Common | SSH keys | Get user home directory
+  shell:
+    cmd: |
+      getent passwd "{{ user.value.name }}" | cut -d':' -f6
+  register: passwd_user
+  changed_when: false
+  tags:
+    - users
+    - ssh_keys
+
 - name: Common | Users | Ensure user bashrc file
   copy:
     src: skel/.bashrc
-    dest: "/home/{{ item.value.name }}/.bashrc"
-    owner: "{{ item.value.name }}"
-    group: "{{ item.value.name }}"
+    dest: "{{ passwd_user.stdout }}/.bashrc"
+    owner: "{{ user.value.name }}"
+    group: "{{ user.value.name }}"
     mode: 0644
-  no_log: yes
-  with_dict: "{{ s_cd.users }}"
-  when: item.value.state == 'present'
-
-- name: Common | Users | Ensure root bashrc file
-  copy:
-    src: skel/.bashrc
-    dest: "/root/.bashrc"
-    owner: root
-    group: root
-    mode: 0640
+  when: user.value.state == 'present'
+  tags:
+    - users
 
 - name: Common | Users | Ensure user irbrc file
   copy:
     src: skel/.irbrc
-    dest: "/home/{{ item.value.name }}/.irbrc"
-    owner: "{{ item.value.name }}"
-    group: "{{ item.value.name }}"
+    dest: "{{ passwd_user.stdout }}/.irbrc"
+    owner: "{{ user.value.name }}"
+    group: "{{ user.value.name }}"
     mode: 0644
-  no_log: yes
-  with_dict: "{{ s_cd.users }}"
-  when: item.value.state == 'present'
-
-- name: Common | Users | Ensure root irbrc file
-  copy:
-    src: skel/.irbrc
-    dest: "/root/.irbrc"
-    owner: root
-    group: root
-    mode: 0640
+  when: user.value.state == 'present'
+  tags:
+    - users

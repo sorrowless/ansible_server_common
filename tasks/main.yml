@@ -66,6 +66,9 @@
 
 - name: Common | Users
   include_tasks: users.yml
+  with_dict: "{{ s_cd.users }}"
+  loop_control:
+    loop_var: user
   tags:
     - users
     - ssh_keys
