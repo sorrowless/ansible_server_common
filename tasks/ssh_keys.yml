@@ -148,6 +148,19 @@
       tags:
         - users
         - ssh_keys
+
+    # In case you have private key set but there is public key with the same name (like if you set
+    # id_ed25519 and there is id_ed25519.pub) but public key is not the same as private key,
+    # OpenSSH won't let you to login to anywhere with private key (idk why)
+    - name: Common | SSH keys | Unset {{ user.key }} public keys (they can be not same as private)
+      file:
+        dest: "{{ passwd_user.stdout }}/.ssh/{{ item.name }}.pub"
+        state: absent
+      with_items: "{{ user.value.ssh_private_keys }}"
+      when: user.value.ssh_private_keys is defined and user.value.state != 'absent'
+      tags:
+        - users
+        - ssh_keys
   always:
     - name: Common | SSH keys | Set chattr to authorized keys file
       become: yes
