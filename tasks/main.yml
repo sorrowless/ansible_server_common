@@ -44,6 +44,9 @@
     owner: root
     group: root
     mode: 0777
+  tags:
+    - users
+    - logfiles
 
 - name: Common | Users | Ensure base irbrc history directory
   file:
@@ -52,6 +55,9 @@
     owner: root
     group: root
     mode: 0777
+  tags:
+    - users
+    - logfiles
 
 - name: Ensure Bash skeleton common lines
   copy:
