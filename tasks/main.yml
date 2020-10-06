@@ -8,7 +8,7 @@
 - name: Common | Packages installation
   package:
     name: "{{ item }}"
-    state: latest
+    state: present
   with_items: "{{ s_cd.packages }}"
   tags:
     - packages
@@ -69,6 +69,21 @@
   with_items:
     - .bashrc
     - .irbrc
+
+- name: Ensure custom directories
+  file:
+    state: directory
+    path: "{{ item.path }}"
+    mode: "{{ item.mode|default('0755') }}"
+    owner: "{{ item.owner|default('root') }}"
+    group: "{{ item.group|default('root') }}"
+  with_items: "{{ s_cd.custom_dirs }}"
+
+- name: Ensure custom groups
+  group:
+    name: "{{ item.name }}"
+    state: "{{ item.state|default('present') }}"
+  with_items: "{{ s_cd.groups }}"
 
 - name: Common | Users
   include_tasks: users.yml

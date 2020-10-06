@@ -36,5 +36,9 @@ server_common_data:
   limits_nofile:
     soft: 100000
     hard: 200000
+  # Custom directories list
+  custom_dirs: []
+  # Custom groups definition
+  groups: []
 server_common_group: {}
 server_common_host: {}

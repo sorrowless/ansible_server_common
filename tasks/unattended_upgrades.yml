@@ -2,7 +2,7 @@
 - name: Ensure unattended-upgrades package
   package:
     name: "unattended-upgrades"
-    state: latest
+    state: present
 
 - name: Ensure noninteractive configuration of upgrades
   become: yes
