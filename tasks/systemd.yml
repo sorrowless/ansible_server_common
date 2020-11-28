@@ -1,5 +1,6 @@
 ---
 - name: Ensure systemd configuration directory
+  become: yes
   file:
     state: directory
     path: /etc/systemd/journald.conf.d
@@ -8,6 +9,7 @@
     mode: 0755
 
 - name: Ensure systemd configuration
+  become: yes
   copy:
     content: |
       [Journal]

@@ -10,6 +10,7 @@ server_common_data:
     - iftop
     - python
     - git
+    - curl
   # Host DNS name
   dns_hostname: localhost
   # If set to True, root password will exclusive set to '!'. Cannot be

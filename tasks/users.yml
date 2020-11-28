@@ -1,5 +1,6 @@
 ---
 - name: Common | Users | Ensure users on target node
+  become: yes
   user:
     name: "{{ user.value.name }}"
     comment: "{{ user.value.comment | default('') }}"
@@ -25,6 +26,7 @@
     - ssh_keys
 
 - name: Common | Users | Ensure user bashrc file
+  become: yes
   copy:
     src: skel/.bashrc
     dest: "{{ passwd_user.stdout }}/.bashrc"
@@ -36,6 +38,7 @@
     - users
 
 - name: Common | Users | Ensure user irbrc file
+  become: yes
   copy:
     src: skel/.irbrc
     dest: "{{ passwd_user.stdout }}/.irbrc"

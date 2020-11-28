@@ -1,5 +1,6 @@
 ---
 - name: Ensure unattended-upgrades package
+  become: yes
   package:
     name: "unattended-upgrades"
     state: present
