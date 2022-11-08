@@ -43,5 +43,5 @@ server_common_data:
   groups: []
 server_common_group: {}
 server_common_host: {}
-DNS1: 8.8.8.8
-DNS2: 1.1.1.1
+common_dns_server1: 8.8.8.8
+common_dns_server2: 1.1.1.1
