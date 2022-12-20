@@ -94,6 +94,12 @@
     state: "{{ item.state|default('present') }}"
   with_items: "{{ s_cd.groups }}"
 
+- name: Common | Refresh Host SSH
+  include_tasks: refresh_ssh_host_key.yml
+  tags:
+    - refresh_host_ssh
+    - never
+
 - name: Common | Users
   include_tasks: users.yml
   with_dict: "{{ s_cd.users }}"
