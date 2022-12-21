@@ -152,3 +152,8 @@
   import_tasks: systemd.yml
   tags:
     - systemd
+
+- name: Configure DNS 
+  include_tasks: dns.yml
+  tags:
+    - dns
