@@ -95,7 +95,7 @@
   with_items: "{{ s_cd.groups }}"
 
 - name: Common | Refresh Host SSH
-  import_tasks: refresh_ssh_host_key.yml
+  include_tasks: refresh_ssh_host_key.yml
   tags:
     - refresh_host_ssh
     - never

@@ -4,19 +4,31 @@
     paths: /etc/ssh
     patterns: ssh_host_*
   register: ssh_keys
+  tags:
+    - refresh_host_ssh
+    - never
 
 - name: Delete old ssh keys
   file:
     path: "{{ item.path }}"
     state: absent
   with_items: "{{ ssh_keys.files }}"
+  tags:
+    - refresh_host_ssh
+    - never
 
 - name: Generate new ssh host keys
   shell:
     cmd: |
       dpkg-reconfigure openssh-server
+  tags:
+    - refresh_host_ssh
+    - never
 
 - name: Restart sshd service
   systemd:
     state: restarted
     name: sshd
+  tags:
+    - refresh_host_ssh
+    - never
