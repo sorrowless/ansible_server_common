@@ -11,6 +11,10 @@
     name: "{{ item }}"
     state: present
   with_items: "{{ s_cd.packages }}"
+  retries: 3
+  delay: 10
+  register: "package_install"
+  until: "package_install is succeeded"
   tags:
     - packages
 

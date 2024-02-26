@@ -4,6 +4,10 @@
   package:
     name: "unattended-upgrades"
     state: present
+  retries: 3
+  delay: 10
+  register: "unattended_upgrades"
+  until: "unattended_upgrades is succeeded"
 
 - name: Ensure noninteractive configuration of upgrades
   become: yes
