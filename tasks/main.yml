@@ -5,6 +5,14 @@
   tags:
     - always
 
+- name: Common | Run apt update
+  become: yes
+  apt:
+    update_cache: yes
+  when: ansible_facts['os_family'] == "Debian" and ansible_facts['distribution'] == "Ubuntu"
+  tags:
+    - packages
+
 - name: Common | Packages installation
   become: yes
   package:
