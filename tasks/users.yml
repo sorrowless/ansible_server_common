@@ -31,7 +31,7 @@
     createhome: yes
     remove: "{{ user.value.absent | default(False) }}"
     state: "{{ user.value.state | default('present') }}"
-    password: "{{ user.value.password }}"
+    password: "{{ user.value.password | default('!') }}"
     shell: /bin/bash
   no_log: yes
   tags:
