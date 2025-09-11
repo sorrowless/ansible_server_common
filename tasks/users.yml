@@ -33,6 +33,7 @@
     state: "{{ user.value.state | default('present') }}"
     password: "{{ user.value.password | default('!') }}"
     shell: /bin/bash
+    home: "{{ user.value.home | default(omit) }}"
   no_log: yes
   tags:
     - users
