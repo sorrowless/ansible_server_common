@@ -43,6 +43,8 @@
     group: root
     mode: 0644
     insertafter: '^127\.0\.0\.1'
+  tags:
+    - hostname
 
 - name: Common | Ensure message of the day
   become: yes
@@ -165,7 +167,7 @@
   tags:
     - systemd
 
-- name: Configure DNS 
+- name: Configure DNS
   import_tasks: dns.yml
   tags:
     - dns
