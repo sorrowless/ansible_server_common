@@ -25,6 +25,7 @@
   become: yes
   user:
     name: "{{ user.value.name }}"
+    group: "{{ user.value.group | default(omit) }}"
     comment: "{{ user.value.comment | default('') }}"
     groups: "{{ user.value.groups | default('') }}"
     append: yes
@@ -32,7 +33,7 @@
     remove: "{{ user.value.absent | default(False) }}"
     state: "{{ user.value.state | default('present') }}"
     password: "{{ user.value.password | default('!') }}"
-    shell: /bin/bash
+    shell: "{{ user.value.shell | default('/bin/bash') }}"
     home: "{{ user.value.home | default(omit) }}"
   no_log: yes
   tags:
