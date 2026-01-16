@@ -9,6 +9,7 @@ server_common_data:
     - iotop
     - iftop
     - python3
+    - python3-jsondiff
     - git
     - curl
   # Host DNS name
