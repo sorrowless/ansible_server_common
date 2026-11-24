@@ -1,34 +1,62 @@
 ---
-- name: Stop service systemd-resolved
-  become: true
-  ansible.builtin.service:
-    name: systemd-resolved
-    state: stopped
+- name: Start systemd-resolved
+  when: server_common_systemd_resolved
+  block:
+    - name: Start and enable service systemd-resolved
+      become: true
+      ansible.builtin.service:
+        name: systemd-resolved
+        state: started
+        enabled: true
 
-- name: Disable service systemd-resolved
-  become: true
-  ansible.builtin.service:
-    name: systemd-resolved
-    enabled: no
+    - name: Check /etc/resolv.conf
+      ansible.builtin.stat:
+        path: /etc/resolv.conf
+      register: resolv_conf
 
-- name: Remove symbol link resolv.conf
-  become: true
-  ansible.builtin.file:
-    path: /etc/resolv.conf
-    state: absent
+    - name: Ensure /etc/resolv.conf is a symlink to systemd-resolved stub
+      ansible.builtin.file:
+        src: ../run/systemd/resolve/stub-resolv.conf
+        dest: /etc/resolv.conf
+        state: link
+        force: "{{ not resolv_conf.stat.islnk }}"
+        owner: root
+        group: root
+        mode: '0777'
 
-- name: resolv.conf | Ensure dns configuration
-  become: true
-  template:
-    src: resolv.j2
-    dest: "/etc/resolv.conf"
-    owner: root
-    group: root
-    mode: 0644
+- name: Stop systemd-resolved
+  when: not server_common_systemd_resolved
+  block:
+    - name: Stop service systemd-resolved
+      become: true
+      ansible.builtin.service:
+        name: systemd-resolved
+        state: stopped
+
+    - name: Disable service systemd-resolved
+      become: true
+      ansible.builtin.service:
+        name: systemd-resolved
+        enabled: false
+
+    - name: Remove symbol link resolv.conf
+      become: true
+      ansible.builtin.file:
+        path: /etc/resolv.conf
+        state: absent
+
+    - name: resolv.conf | Ensure dns configuration
+      become: true
+      ansible.builtin.template:
+        src: resolv.j2
+        dest: "/etc/resolv.conf"
+        owner: root
+        group: root
+        mode: '0644'
 
 - name: Add hosts entries to /etc/hosts
   become: true
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/hosts
     line: "{{ item.addr }} {{ item.domain }}"
     state: present
